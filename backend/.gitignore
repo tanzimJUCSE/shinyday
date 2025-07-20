@@ -24,7 +24,7 @@ local.settings.json
 
 node_modules
 dist
-
+src/db.js
 # Local python packages
 .python_packages/
 
