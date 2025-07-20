@@ -9,7 +9,8 @@
   },
   "dependencies": {
     "@azure/functions": "^4.0.0",
-    "uuid": "^11.1.0"
+    "mongodb": "^5.8.0",
+    "uuid": "^9.0.0"
   },
   "devDependencies": {
     "azure-functions-core-tools": "^4.x"

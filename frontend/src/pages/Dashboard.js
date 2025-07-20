@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import History from '../components/History';
 import Timeline from '../components/Timeline';
 const API_BASE = 'https://shinydayfunctions.azurewebsites.net/api';
+// const API_BASE = 'http://localhost:7071/api';
 
 function Dashboard() {
   const [history, setHistory] = useState([]);

@@ -1,10 +1,9 @@
 const { app } = require('@azure/functions');
 const { v4: uuidv4 } = require('uuid');
-
-const checkins = [];
+const { getDb } = require('../db');
 
 app.http('dailyCheckin', {
-    methods: ['POST'],
+    methods: ['POST','OPTIONS'],
     authLevel: 'anonymous',
     handler: async (request, context) => {
         context.log(`Http function processed request for url "${request.url}"`);
@@ -20,14 +19,20 @@ app.http('dailyCheckin', {
         }
 
         const checkin = {
-            id: uuidv4(),
+            _id: uuidv4(),
             timestamp: new Date().toISOString(),
             mood,
             habits
         };
-        
-        checkins.push(checkin);
-        context.log('Received check-in:', checkin);
+
+        try {
+            const db = await getDb();
+            await db.collection('checkins').insertOne(checkin);
+        } catch (err) {
+            context.log('DB insert error', err);
+            return { status: 500, body: 'Database error' };
+        }
+        context.log('Stored check-in:', checkin);
 
         // In a real application, you would store this data in a database.
         // For this example, we'll just return the check-in data.
@@ -41,5 +46,3 @@ app.http('dailyCheckin', {
         };
     }
 });
-
-module.exports.checkins = checkins;

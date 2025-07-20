@@ -16,8 +16,9 @@ function DailyCheckin() {
   const [mood, setMood] = useState(3);
   const [selectedHabits, setSelectedHabits] = useState([]);
   const navigate = useNavigate();
-  // Hard-coded backend URL for production; replace with your own Function App URL if different
   const API_BASE = 'https://shinydayfunctions.azurewebsites.net/api';
+  // For local development use Functions Core Tools on port 7071 ↓
+  // const API_BASE = 'http://localhost:7071/api';
 
   const handleHabitToggle = (habitId) => {
     setSelectedHabits((prev) =>
