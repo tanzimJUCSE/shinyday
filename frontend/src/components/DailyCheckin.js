@@ -16,6 +16,8 @@ function DailyCheckin() {
   const [mood, setMood] = useState(3);
   const [selectedHabits, setSelectedHabits] = useState([]);
   const navigate = useNavigate();
+  // Hard-coded backend URL for production; replace with your own Function App URL if different
+  const API_BASE = 'https://shinydayfunctions.azurewebsites.net/api';
 
   const handleHabitToggle = (habitId) => {
     setSelectedHabits((prev) =>
@@ -30,7 +32,7 @@ function DailyCheckin() {
     const checkinData = { mood, habits: selectedHabits };
     
     try {
-      const response = await fetch('/api/dailyCheckin', {
+      const response = await fetch(`${API_BASE}/dailyCheckin`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

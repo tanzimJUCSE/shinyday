@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import History from '../components/History';
 import Timeline from '../components/Timeline';
+const API_BASE = 'https://shinydayfunctions.azurewebsites.net/api';
 
 function Dashboard() {
   const [history, setHistory] = useState([]);
@@ -8,7 +9,7 @@ function Dashboard() {
   useEffect(() => {
     const fetchHistory = async () => {
       try {
-        const response = await fetch('/api/getCheckinHistory');
+        const response = await fetch(`${API_BASE}/getCheckinHistory`);
         const data = await response.json();
         setHistory(data.checkins || []);
       } catch (error) {
