@@ -5,10 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
-
-const API_BASE = window.location.hostname === 'localhost'
-  ? 'http://localhost:7071/api'
-  : 'https://shinydayfunctions.azurewebsites.net/api';
+import { API_BASE } from '../util/env';
 
 function SignIn() {
   const [email, setEmail] = useState('');

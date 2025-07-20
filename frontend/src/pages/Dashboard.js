@@ -24,7 +24,9 @@ function Dashboard() {
     };
     fetchHistory();
   };
-  useEffect(load, []);
+  useEffect(()=>{
+    if(user) load();
+  }, [user]);
 
   const handleDelete = async ()=>{
     await fetch(`${API_BASE}/deleteMyCheckins?email=${encodeURIComponent(user.email)}`,{method:'DELETE'});
@@ -34,6 +36,9 @@ function Dashboard() {
   return (
     <div>
       <Button onClick={handleDelete} variant="contained" color="error" sx={{ mb: 2 }}>Delete My Data</Button>
+      <Button onClick={()=>{
+        window.location.href=`${API_BASE}/exportCsv?email=${encodeURIComponent(user.email)}`;
+      }} variant="contained" color="success" sx={{mb:2, ml:2}}>Download CSV</Button>
       <Timeline history={history} />
       <History history={history} />
     </div>

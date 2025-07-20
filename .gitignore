@@ -10,6 +10,6 @@ node_modules/
 
 # Ignore environment files
 .env
-
+*.json
 # Ignore local VSCode settings
 .vscode/ get-pip.py

@@ -5,10 +5,7 @@ import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../AuthContext';
-
-const API_BASE = window.location.hostname === 'localhost'
-  ? 'http://localhost:7071/api'
-  : 'https://shinydayfunctions.azurewebsites.net/api';
+import { API_BASE } from '../util/env';
 
 function SignUp() {
   const [email, setEmail] = useState('');
@@ -26,15 +23,7 @@ function SignUp() {
         body: JSON.stringify({ email, password }),
       });
       if (!res.ok) throw new Error(await res.text());
-      // Auto-login
-      const loginRes = await fetch(`${API_BASE}/login`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
-      });
-      const data = await loginRes.json();
-      login({ email, token: data.token });
-      navigate('/');
+      navigate('/signin');
     } catch (err) {
       setError(err.message);
     }

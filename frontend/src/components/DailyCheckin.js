@@ -12,7 +12,7 @@ import { AuthContext } from '../AuthContext';
 
 const habits = [
   { id: 'sleep', name: 'Sleep 7h' },
-  { id: 'water', name: 'Drink Water' },
+  { id: 'water', name: 'Drink Water at Least 3L' },
   { id: 'exercise', name: 'Exercise' },
   { id: 'reading', name: 'Read' },
   { id: 'meditation', name: 'Meditate' },
@@ -29,6 +29,8 @@ function DailyCheckin() {
     : 'https://shinydayfunctions.azurewebsites.net/api';
   const [openSnack, setOpenSnack] = useState(false);
   const { user } = useContext(AuthContext);
+
+  if(!user) { navigate('/signin'); return null; }
 
   const handleHabitToggle = (habitId) => {
     setSelectedHabits((prev) =>

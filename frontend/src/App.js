@@ -9,6 +9,7 @@ import SignUp from './pages/SignUp';
 import SignIn from './pages/SignIn';
 import Landing from './Landing';
 import ProtectedRoute from './ProtectedRoute';
+import RedirectIfAuth from './RedirectIfAuth';
 
 function App() {
   return (
@@ -19,8 +20,8 @@ function App() {
             <Route path="/" element={<Landing />} />
             <Route path="/app" element={<ProtectedRoute><DailyCheckin /></ProtectedRoute>} />
             <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
-            <Route path="/signup" element={<SignUp />} />
-            <Route path="/signin" element={<SignIn />} />
+            <Route path="/signup" element={<RedirectIfAuth><SignUp /></RedirectIfAuth>} />
+            <Route path="/signin" element={<RedirectIfAuth><SignIn /></RedirectIfAuth>} />
           </Route>
         </Routes>
       </AuthProvider>
