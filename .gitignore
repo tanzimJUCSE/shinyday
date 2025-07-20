@@ -1,0 +1,15 @@
+# Ignore deployment archives
+*.zip
+
+# Ignore build outputs
+/frontend/build/
+/backend/build/
+
+# Ignore node modules
+node_modules/
+
+# Ignore environment files
+.env
+
+# Ignore local VSCode settings
+.vscode/ 
