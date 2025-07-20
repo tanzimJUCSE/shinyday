@@ -9,7 +9,9 @@ app.http('getCheckinHistory', {
 
         try {
             const db = await getDb();
-            const history = await db.collection('checkins').find({}).toArray();
+            const email = request.query.get('email');
+            if(!email) return {status:400, body:'email query required'};
+            const history = await db.collection('checkins').find({ email }).toArray();
             return { status: 200, jsonBody: { checkins: history } };
         } catch (err) {
             context.log('DB query error', err);

@@ -1,6 +1,14 @@
-import React, { useState } from 'react';
+import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './DailyCheckin.css';
+import Snackbar from '@mui/material/Snackbar';
+import Alert from '@mui/material/Alert';
+import Button from '@mui/material/Button';
+import FormGroup from '@mui/material/FormGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import Checkbox from '@mui/material/Checkbox';
+import Box from '@mui/material/Box';
+import { AuthContext } from '../AuthContext';
 
 const habits = [
   { id: 'sleep', name: 'Sleep 7h' },
@@ -16,9 +24,11 @@ function DailyCheckin() {
   const [mood, setMood] = useState(3);
   const [selectedHabits, setSelectedHabits] = useState([]);
   const navigate = useNavigate();
-  const API_BASE = 'https://shinydayfunctions.azurewebsites.net/api';
-  // For local development use Functions Core Tools on port 7071 ↓
-  // const API_BASE = 'http://localhost:7071/api';
+  const API_BASE = window.location.hostname === 'localhost'
+    ? 'http://localhost:7071/api'
+    : 'https://shinydayfunctions.azurewebsites.net/api';
+  const [openSnack, setOpenSnack] = useState(false);
+  const { user } = useContext(AuthContext);
 
   const handleHabitToggle = (habitId) => {
     setSelectedHabits((prev) =>
@@ -38,10 +48,11 @@ function DailyCheckin() {
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify(checkinData),
+        body: JSON.stringify({ ...checkinData, email: user.email }),
       });
       await response.json();
-      navigate('/dashboard'); // Redirect to dashboard
+      setOpenSnack(true);
+      navigate('/dashboard');
     } catch (error) {
       console.error('Error submitting check-in:', error);
     }
@@ -63,21 +74,33 @@ function DailyCheckin() {
       </div>
       <h2>What have you done today?</h2>
       <form onSubmit={handleSubmit}>
-        <div className="habit-list">
+        <FormGroup>
           {habits.map((habit) => (
-            <div key={habit.id}>
-              <input
-                type="checkbox"
-                id={habit.id}
-                checked={selectedHabits.includes(habit.id)}
-                onChange={() => handleHabitToggle(habit.id)}
-              />
-              <label htmlFor={habit.id}>{habit.name}</label>
-            </div>
+            <FormControlLabel
+              key={habit.id}
+              control={
+                <Checkbox
+                  checked={selectedHabits.includes(habit.id)}
+                  onChange={() => handleHabitToggle(habit.id)}
+                  color="primary"
+                />
+              }
+              label={habit.name}
+              sx={{ '.MuiFormControlLabel-label': { color: '#0d47a1', fontWeight: 500 } }}
+            />
           ))}
-        </div>
-        <button type="submit">Submit</button>
+        </FormGroup>
+        <Box sx={{ display: 'flex', justifyContent: 'center' }}>
+          <Button type="submit" variant="contained" color="primary" sx={{ mt: 2 }}>
+            Submit
+          </Button>
+        </Box>
       </form>
+      <Snackbar open={openSnack} autoHideDuration={3000} onClose={() => setOpenSnack(false)}>
+        <Alert onClose={() => setOpenSnack(false)} severity="success" sx={{ width: '100%' }}>
+          Submitted successfully!
+        </Alert>
+      </Snackbar>
     </div>
   );
 }

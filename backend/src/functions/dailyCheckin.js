@@ -9,7 +9,8 @@ app.http('dailyCheckin', {
         context.log(`Http function processed request for url "${request.url}"`);
 
         const data = await request.json();
-        const { mood, habits } = data;
+        const { mood, habits, email } = data;
+        if(!email) return {status:400, body:'email required'};
 
         if (!mood || !habits) {
             return {
@@ -22,7 +23,8 @@ app.http('dailyCheckin', {
             _id: uuidv4(),
             timestamp: new Date().toISOString(),
             mood,
-            habits
+            habits,
+            email
         };
 
         try {

@@ -1,27 +1,29 @@
 import React from 'react';
-import { BrowserRouter as Router, Routes, Route, NavLink } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import DailyCheckin from './components/DailyCheckin';
 import Dashboard from './pages/Dashboard';
+import Layout from './Layout';
 import './App.css';
+import { AuthProvider } from './AuthContext';
+import SignUp from './pages/SignUp';
+import SignIn from './pages/SignIn';
+import Landing from './Landing';
+import ProtectedRoute from './ProtectedRoute';
 
 function App() {
   return (
     <Router>
-      <div className="App">
-        <header className="App-header">
-          <h1>ShineDay</h1>
-          <nav>
-            <NavLink to="/">Home</NavLink>
-            <NavLink to="/dashboard">Dashboard</NavLink>
-          </nav>
-        </header>
-        <main>
-          <Routes>
-            <Route path="/" element={<DailyCheckin />} />
-            <Route path="/dashboard" element={<Dashboard />} />
-          </Routes>
-        </main>
-      </div>
+      <AuthProvider>
+        <Routes>
+          <Route element={<Layout />}>
+            <Route path="/" element={<Landing />} />
+            <Route path="/app" element={<ProtectedRoute><DailyCheckin /></ProtectedRoute>} />
+            <Route path="/dashboard" element={<ProtectedRoute><Dashboard /></ProtectedRoute>} />
+            <Route path="/signup" element={<SignUp />} />
+            <Route path="/signin" element={<SignIn />} />
+          </Route>
+        </Routes>
+      </AuthProvider>
     </Router>
   );
 }
